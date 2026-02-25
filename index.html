@@ -5,21 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>เงื่อนไขและข้อกำหนด - K2PS</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 :root {
   --navy:#1a3a6b; --navy2:#2952a3; --blue:#2563eb; --blue2:#1d4ed8;
-  --orange:#dd6b20; --red:#c0392b;
-  --green:#16a34a;
+  --orange:#dd6b20; --red:#c0392b; --green:#16a34a;
   --text1:#1a202c; --text2:#4a5568; --muted:#718096;
   --border:#e2e8f0; --bg:#f0f4f8; --card:#fff;
   --note-bg:#fffbeb; --note-border:#f6c94e; --note-text:#744210;
   --bottom-bg:#f7f8fc; --err:#dc2626;
 }
-body { font-family:"Sarabun",sans-serif; background:var(--bg); color:var(--text1); min-height:100vh; padding:24px 16px 60px; }
+body {
+  font-family:"Sarabun",sans-serif;
+  background:var(--bg); color:var(--text1);
+  min-height:100vh; padding:24px 16px 60px;
+}
 .wrap { max-width:480px; margin:0 auto; }
 
-.sec { background:var(--card); border-left:1px solid var(--border); border-right:1px solid var(--border); }
+/* CARD SECTIONS */
+.sec {
+  background:var(--card);
+  border-left:1px solid var(--border);
+  border-right:1px solid var(--border);
+}
 .sec:first-child { border-top:1px solid var(--border); border-radius:16px 16px 0 0; }
 .sec-last { border-bottom:1px solid var(--border); border-radius:0 0 16px 16px; }
 .sep { border-top:1px solid var(--border); }
@@ -30,33 +39,50 @@ body { font-family:"Sarabun",sans-serif; background:var(--bg); color:var(--text1
 .header h1 em { font-style:normal; color:var(--navy2); }
 .header .sub { font-size:13px; color:var(--muted); margin-top:8px; line-height:1.6; }
 
-/* FORM SECTION */
-.form-sec { padding:20px 24px; display:flex; gap:16px; justify-content:space-between; align-items:flex-start; }
+/* FORM */
+.form-sec {
+  padding:20px 24px;
+  display:flex; gap:16px;
+  justify-content:space-between; align-items:flex-start;
+}
 .form-fields { flex:1; display:flex; flex-direction:column; gap:12px; }
-
 .field-group { display:flex; flex-direction:column; gap:4px; }
 .field-group label { font-size:12px; font-weight:600; color:var(--navy2); }
 .field-group input {
   border:1.5px solid var(--border); border-radius:8px;
   padding:9px 12px; font-family:"Sarabun",sans-serif; font-size:14px;
   color:var(--text1); background:#fff; outline:none;
-  transition:border-color 0.15s;
+  transition:border-color 0.15s, box-shadow 0.15s;
 }
-.field-group input:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,0.1); }
+.field-group input:focus {
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(37,99,235,0.1);
+}
 .field-group input.err { border-color:var(--err); }
+.field-group input.ok  { border-color:var(--green); }
 .field-group .hint { font-size:11px; color:var(--muted); }
 .field-group .errmsg { font-size:11px; color:var(--err); display:none; }
 .field-group input.err ~ .errmsg { display:block; }
-
 .status-row { font-size:13px; color:var(--text2); margin-top:4px; }
 .status-row .badge { color:var(--orange); font-weight:600; }
 
+/* QR */
 .qr-block { flex-shrink:0; display:flex; flex-direction:column; align-items:center; gap:6px; }
-.qr-block img { width:88px; height:88px; border-radius:6px; border:1px solid var(--border); object-fit:cover; }
-.qr-label { font-size:11px; color:var(--muted); text-align:center; }
+#qr-canvas {
+  width:88px; height:88px;
+  border-radius:6px; border:1px solid var(--border);
+  overflow:hidden; background:#fff;
+}
+#qr-canvas img    { width:88px !important; height:88px !important; }
+#qr-canvas canvas { width:88px !important; height:88px !important; }
+.qr-label { font-size:11px; color:var(--muted); text-align:center; max-width:88px; line-height:1.4; }
 
-/* NOTE YELLOW */
-.note-yellow { background:var(--note-bg); border-left:4px solid var(--note-border); padding:13px 18px; }
+/* NOTE */
+.note-yellow {
+  background:var(--note-bg);
+  border-left:4px solid var(--note-border);
+  padding:13px 18px;
+}
 .note-yellow p { font-size:13px; color:var(--note-text); line-height:1.65; }
 .note-yellow strong { color:var(--red); font-weight:700; }
 
@@ -73,7 +99,10 @@ body { font-family:"Sarabun",sans-serif; background:var(--bg); color:var(--text1
 }
 .terms-scroll::-webkit-scrollbar { width:5px; }
 .terms-scroll::-webkit-scrollbar-thumb { background:#cbd5e0; border-radius:3px; }
-.term-item { font-size:14px; color:var(--text2); padding:10px 16px; border-bottom:1px solid var(--border); line-height:1.55; }
+.term-item {
+  font-size:14px; color:var(--text2);
+  padding:10px 16px; border-bottom:1px solid var(--border); line-height:1.55;
+}
 .term-item:last-child { border-bottom:none; }
 .term-item .n { color:var(--navy2); font-weight:700; margin-right:4px; }
 
@@ -84,21 +113,18 @@ body { font-family:"Sarabun",sans-serif; background:var(--bg); color:var(--text1
 
 /* BUTTON */
 .btn-sec { padding:14px 24px 18px; }
-#confirmLink {
-  display:block; text-decoration:none;
-  pointer-events:none; opacity:0.5;
-  transition:opacity 0.2s;
-}
-#confirmLink.active { pointer-events:auto; opacity:1; }
 .btn-confirm {
   width:100%; background:var(--blue); color:#fff; border:none;
   border-radius:10px; padding:15px;
   font-family:"Sarabun",sans-serif; font-size:16px; font-weight:600;
-  cursor:not-allowed; box-shadow:0 4px 14px rgba(37,99,235,0.3);
-  transition:background 0.15s;
+  cursor:not-allowed; opacity:0.45;
+  box-shadow:0 4px 14px rgba(37,99,235,0.25);
+  transition:background 0.15s, opacity 0.2s, transform 0.1s;
 }
-#confirmLink.active .btn-confirm { cursor:pointer; }
-#confirmLink.active .btn-confirm:hover { background:var(--blue2); }
+.btn-confirm.active          { cursor:pointer; opacity:1; }
+.btn-confirm.active:hover    { background:var(--blue2); transform:translateY(-1px); }
+.btn-confirm.active:active   { transform:translateY(0); }
+.btn-confirm.loading         { cursor:not-allowed; opacity:0.7; }
 
 /* BOTTOM */
 .bottom-note { background:var(--bottom-bg); padding:14px 20px; }
@@ -106,106 +132,93 @@ body { font-family:"Sarabun",sans-serif; background:var(--bg); color:var(--text1
 
 /* TOAST */
 .toast {
-  position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px);
-  background:#1e293b; color:#fff; border-radius:10px; padding:12px 20px;
-  font-size:13px; opacity:0; transition:all 0.3s; z-index:999; white-space:nowrap;
+  position:fixed; bottom:24px; left:50%;
+  transform:translateX(-50%) translateY(80px);
+  background:#1e293b; color:#fff; border-radius:10px;
+  padding:12px 20px; font-size:13px;
+  opacity:0; transition:all 0.3s; z-index:999;
+  white-space:nowrap; pointer-events:none;
 }
-.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+.toast.show    { opacity:1; transform:translateX(-50%) translateY(0); }
 .toast.success { background:var(--green); }
 .toast.error   { background:var(--err); }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script>
-// ---- Generate QR Code จาก Sheet URL ----
-window.addEventListener('load', function() {
-  if (typeof QRCode !== 'undefined') {
-    new QRCode(document.getElementById('qr-canvas'), {
-      text: 'https://script.google.com/macros/s/AKfycbzIz7HPyMttU2fGL8K7lEfAbPYlZU5ilDi2O__3LhngQ_a4MGYjG1j0uZptxtPmelzC7Q/exec',
-      width: 88,
-      height: 88,
-      colorDark: '#1a3a6b',
-      colorLight: '#ffffff',
-      correctLevel: QRCode.CorrectLevel.M
-    });
-  }
-});
-</script>
 </head>
 <body>
 <div class="wrap">
 
 <!-- HEADER -->
 <div class="sec header">
-  <h1>เงื่อนไขและ<em>ข้อกำหนด</em> ก่อนดำเนินการยืนยันตัวตน</h1>
+  <h1>เงื่อนไขและ<em>ข้อกำหนด</em><br>ในการซื้อขาย</h1>
   <p class="sub">กรุณากรอกข้อมูลและอ่านเงื่อนไขด้านล่างให้ครบถ้วนก่อนดำเนินการ</p>
 </div>
 
-<!-- FORM SECTION -->
+<!-- FORM -->
 <div class="sec sep form-sec">
   <div class="form-fields">
 
-    <!-- ชื่อ-นามสกุล -->
     <div class="field-group">
       <label>ชื่อ-นามสกุล *</label>
-      <input type="text" id="inp-name" placeholder="เช่น สมชาย ใจดี" oninput="validate()" autocomplete="name">
-      <span class="errmsg">กรุณากรอกชื่อ-นามสกุล</span>
+      <input type="text" id="inp-name"
+             placeholder="กรอก ชื่อ-นามสกุล"
+             oninput="validate()" autocomplete="name">
+      <span class="errmsg">กรุณากรอกชื่อ-นามสกุล (อย่างน้อย 3 ตัวอักษร)</span>
     </div>
 
-    <!-- รหัสผู้ขาย -->
     <div class="field-group">
       <label>รหัสผู้ขาย *</label>
-      <input type="text" id="inp-code" placeholder="เช่น KPS-00123" oninput="fmtCode(this); validate()" maxlength="10" autocomplete="off">
-      <span class="hint">รูปแบบ KPS-XXXXX (ตัวเลข 5 หลัก)</span>
-      <span class="errmsg">รูปแบบรหัสไม่ถูกต้อง</span>
+      <input type="text" id="inp-code"
+             placeholder="เช่น KPS-001234"
+             oninput="fmtCode(this); validate()"
+             maxlength="11" autocomplete="off" inputmode="numeric">
+      <span class="hint">พิมพ์ตัวเลข 6 หลัก ระบบใส่ KPS- ให้อัตโนมัติ</span>
+      <span class="errmsg">รูปแบบรหัสไม่ถูกต้อง เช่น KPS-001234</span>
     </div>
 
-    <!-- ยอดเงิน -->
     <div class="field-group">
-      <label>ยอดเงินครั้งแรก (บาท) *</label>
-      <input type="text" id="inp-amount" placeholder="เช่น 23000" oninput="fmtAmount(this); validate()" inputmode="numeric">
-      <span class="errmsg">กรุณากรอกยอดเงิน</span>
+      <label>ยอดขายครั้งแรก (บาท) *</label>
+      <input type="text" id="inp-amount"
+             placeholder="เช่น 23,000"
+             oninput="fmtAmount(this); validate()" inputmode="numeric">
+      <span class="errmsg">กรุณากรอกยอดขายที่ถูกต้อง</span>
     </div>
 
-    <div class="status-row">สถานะ : <span class="badge">รอการยืนยันตัวตน</span></div>
+    <div class="status-row">สถานะ : <span class="badge">รอยืนยันรับยอดขายครั้งแรก</span></div>
   </div>
 
-  <!-- QR CODE -->
   <div class="qr-block">
     <div id="qr-canvas"></div>
     <div class="qr-label">สแกนเพื่อตรวจสอบสถานะ</div>
   </div>
 </div>
 
-<!-- NOTE YELLOW -->
+<!-- NOTE -->
 <div class="note-yellow">
-  <p><strong>หมายเหตุ</strong> : กรุณากรอกข้อมูลให้ครบถ้วนและถูกต้อง ระบบจะบันทึกข้อมูลทันทีที่กดยืนยัน เพื่อใช้ในการตรวจสอบก่อนรับเงินในขั้นตอนถัดไป</p>
+  <p><strong>หมายเหตุ</strong> : กรุณากรอกข้อมูลให้ครบถ้วนและถูกต้อง ระบบจะบันทึกข้อมูลทันทีที่กดยืนยัน เพื่อใช้ในการตรวจสอบก่อนเข้าสู่ถัดไป</p>
 </div>
 
 <!-- TERMS -->
 <div class="sec sep terms-sec">
   <div class="terms-header">
-    <h2>เงื่อนไขและข้อกำหนด</h2>
+    <h2>กฎและเงื่อนไขในการซื้อขาย</h2>
     <div class="dots"><span></span><span></span><span></span></div>
   </div>
   <div class="terms-scroll">
-
     <!-- ✏️ แก้/เพิ่มข้อความเงื่อนไขได้ที่นี่ -->
-
-    <div class="term-item"><span class="n">1.</span> การรับรายขั้นตอน — ผู้ขายต้องยืนยันตัวตนก่อนรับเงินทุกครั้ง ระบบจะตรวจสอบข้อมูลให้เสร็จภายใน 1-3 วันทำการ</div>
-    <div class="term-item"><span class="n">2.</span> ความลับด้านข้อมูล — ข้อมูลส่วนตัวของผู้ขายจะถูกเก็บเป็นความลับ และไม่เปิดเผยแก่บุคคลที่สาม ยกเว้นมีคำสั่งตามกฎหมาย</div>
-    <div class="term-item"><span class="n">3.</span> การติดต่อระหว่างดำเนินการ — ห้ามผู้ขายและผู้ซื้อติดต่อกันโดยตรงนอกระบบ K2PS ฝ่าฝืนมีโทษระงับบัญชีทันที</div>
-    <div class="term-item"><span class="n">4.</span> ระยะเวลาดำเนินการ — การโอนเงินจะเสร็จสิ้นภายใน 3-5 วันทำการ หลังจากผู้ซื้อยืนยันรับสินค้าแล้ว</div>
-    <div class="term-item"><span class="n">5.</span> สิทธิ์ในการยกเลิก — ผู้ขายมีสิทธิ์ยกเลิกการทำรายการได้ภายใน 24 ชั่วโมง หลังจากนั้นจะมีค่าธรรมเนียมการยกเลิก 5% ของมูลค่ารายการ</div>
-    <div class="term-item"><span class="n">6.</span> เมื่อมีการเปลี่ยนแปลงข้อมูลสำคัญ — เช่น เบอร์โทรศัพท์ หรือบัญชีธนาคาร ต้องแจ้งทีมงาน K2PS ล่วงหน้า 24 ชั่วโมง</div>
-    <div class="term-item"><span class="n">7.</span> การคืนเงิน — หากสินค้าไม่ตรงตามที่ระบุ ผู้ซื้อมีสิทธิ์ขอคืนเงินภายใน 3 วัน ระบบ Escrow จะทำการตรวจสอบและตัดสินใจ</div>
-    <div class="term-item"><span class="n">8.</span> ข้อห้ามทำธุรกรรมนอกระบบ — การรับเงินนอกระบบ K2PS ถือเป็นการละเมิดข้อตกลง และจะถูกระงับบัญชีถาวร</div>
-    <div class="term-item"><span class="n">9.</span> ค่าธรรมเนียมบริการ — K2PS เก็บค่าธรรมเนียม 3% ของมูลค่ารายการ หักจากยอดที่โอนให้ผู้ขาย</div>
-    <div class="term-item"><span class="n">10.</span> การยอมรับข้อตกลง — การกดปุ่มยืนยันถือว่าผู้ขายได้อ่านและยอมรับเงื่อนไขทั้งหมดแล้ว มีผลทางกฎหมาย</div>
-
-    <!-- เพิ่มข้อใหม่ได้ที่นี่:
+    <div class="term-item"><span class="n">1.</span> สมาชิกใหม่ทุกท่านต้องดำเนินการสร้างเครดิตบัญชีตามขั้นตอนและระยะเวลาที่ระบบกำหนด โดยการสร้างเครดิตและการทำรายการเบิกถอนเงินทุนจะเป็นไปตามรอบที่ระบบกำหนดเท่านั้น</div>
+    <div class="term-item"><span class="n">2.</span> หากกระบวนการสร้างเครดิตบัญชียังไม่เสร็จสมบูรณ์ สมาชิกจะไม่สามารถดำเนินการเบิกถอนเงินทุนได้จนกว่าระบบจะยืนยันสถานะเรียบร้อย</div>
+    <div class="term-item"><span class="n">3.</span> ระหว่างการสร้างเครดิตบัญชี สมาชิกต้องติดตามและปฏิบัติตามขั้นตอนของระบบอย่างต่อเนื่อง ห้ามขาดการติดต่อหรือหยุดดำเนินการโดยพลการ</div>
+    <div class="term-item"><span class="n">4.</span> สมาชิกต้องดำเนินการสร้างเครดิตบัญชีทุกขั้นตอนให้แล้วเสร็จภายในระยะเวลาที่กำหนด มิฉะนั้นระบบอาจระงับสิทธิ์ชั่วคราวจนกว่าจะดำเนินการครบถ้วน</div>
+    <div class="term-item"><span class="n">5.</span> ห้ามดำเนินการใด ๆ นอกเหนือจากคำแนะนำของระบบ การสร้างเครดิตบัญชีในรอบสุดท้ายต้องดำเนินการตามที่แจ้งไว้เท่านั้น หากเกิดข้อผิดพลาดต้องแก้ไขตามขั้นตอนที่ระบบกำหนด
+(กรณีที่ทำผิดพลาดระบบจะแจ้งให้สร้างเครดิตเพิ่ม 3 ถึง 6 ครั้ง)</div>
+    <div class="term-item"><span class="n">6.</span> เมื่อการสร้างเครดิตบัญชีเสร็จสมบูรณ์ การเบิกถอนเงินทุนต้องเป็นไปตามเงื่อนไขของแพลตฟอร์ม รวมถึงการคงค่าดำเนินการในอัตราที่กำหนด และหากทำรายการผิดพลาดต้องดำเนินการแก้ไขตามคำแนะนำของระบบก่อนทำรายการใหม่</div>
+    <div class="term-item"><span class="n">7.</span> กรณีมีการเปลี่ยนแปลงบัญชีธนาคารหรือข้อมูลธุรกรรมระหว่างกระบวนการ สมาชิกต้องยืนยันตัวตนตามขั้นตอนที่ระบบกำหนดก่อนการรับยอดเงินทั้งหมด</div>
+    <div class="term-item"><span class="n">8.</span> เมื่อสมาชิกกดยอมรับเงื่อนไขแล้ว จะถือว่ายินยอมตามข้อกำหนดทั้งหมด และไม่สามารถยกเลิกหรือยุติกระบวนการภายหลังได้ในทุกกรณี</div>
+    <div class="term-item"><span class="n">9.</span> กรณีผู้ขายยกเลิกการขายภายหลังผู้ซื้อชำระเงินแล้ว บริษัทในฐานะตัวกลางขอใช้สิทธิ์ตามข้อตกลงและกฎหมายที่เกี่ยวข้อง เพื่อป้องกันความเสียหายและการเรียกร้องจากผู้ซื้อ โดยอาจเรียกให้ผู้ขายชำระค่าชดเชยสูงสุดไม่เกินห้า (5) เท่าของมูลค่าสินค้า ตามเงื่อนไขที่ได้ยอมรับไว้ล่วงหน้า</div>
+    <div class="term-item"><span class="n">10.</span> หากสมาชิกดำเนินการผิดพลาดหรือไม่เป็นไปตามขั้นตอนที่ระบบแจ้ง สมาชิกจะต้องดำเนินการแก้ไขให้ถูกต้องตามแนวทางที่ระบบกำหนด และในกรณีที่ยังไม่ดำเนินการแก้ไขหรือแก้ไขไม่ถูกต้อง ระบบอาจกำหนดแผนการแก้ไขเพิ่มเติมตามความเหมาะสม ซึ่งสมาชิกตกลงปฏิบัติตามโดยไม่มีข้อโต้แย้งใด ๆ</div>
+    <!-- เพิ่มข้อใหม่:
     <div class="term-item"><span class="n">11.</span> ข้อความของคุณ</div>
     -->
-
   </div>
 </div>
 
@@ -217,104 +230,120 @@ window.addEventListener('load', function() {
 
 <!-- BUTTON -->
 <div class="sec sep btn-sec">
-  <a id="confirmLink" href="#" onclick="submitData(event)">
-    <button class="btn-confirm" type="button">ยืนยันและดำเนินการต่อ</button>
-  </a>
+  <button class="btn-confirm" id="confirmBtn" type="button" onclick="submitData()">
+    ยืนยันและดำเนินการต่อ
+  </button>
 </div>
 
 <!-- BOTTOM NOTE -->
 <div class="sec sec-last bottom-note">
-  <p>ข้อมูลที่กรอกจะถูกบันทึกลงระบบ K2PS เพื่อใช้ในการตรวจสอบและอนุมัติยอดเงินในขั้นตอนถัดไป<br>
+  <p>ข้อมูลที่กรอกจะถูกบันทึกลงระบบ Escrow เพื่อใช้ในการตรวจสอบและยืนยันเครดิตบัญชี<br>
   ระบบ Escrow K2PS คุ้มครองทั้งผู้ซื้อและผู้ขายทุกรายการ</p>
 </div>
 
 </div><!-- /wrap -->
-
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
 // ================================================================
-// 🔧 ใส่ URL จาก Google Apps Script ตรงนี้ (ดูวิธีตั้งค่าด้านล่าง)
+// CONFIG — ใส่ URL Apps Script ครั้งเดียว ใช้งานได้เลย
 // ================================================================
-const SHEET_URL = '';
-// ตัวอย่าง: const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwYyek8i2IV1WBJESMITNwDPb9g-2Z9kAIeVW41EPCx78mTAIBsvJbMtzHfc4av2ix4/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyH5i1voAtnPXun6ph2WS_bI8s_SHXDZWVd1im91l8JlxM8TF7WGdV1O4Z06eRbjm7S/exec';
+const LINE_URL  = 'https://line.me/ti/p/Rpvv6sGPQY';
 
-// ---- Validation ----
+// ป้องกัน double submit
+let isSubmitting = false;
+
+// ================================================================
+// Validation — คืนค่า true เมื่อทุก field ผ่าน
+// ================================================================
 function validate() {
   const name   = document.getElementById('inp-name').value.trim();
   const code   = document.getElementById('inp-code').value.trim();
-  const amount = document.getElementById('inp-amount').value.replace(/,/g,'').trim();
+  const amount = document.getElementById('inp-amount').value.replace(/,/g, '').trim();
   const agreed = document.getElementById('agree').checked;
 
   const nameOk   = name.length >= 3;
-  const codeOk   = /^KPS-\d{5}$/.test(code);
+  const codeOk   = /^KPS-\d{6}$/.test(code);
   const amountOk = /^\d+$/.test(amount) && parseInt(amount) > 0;
 
-  setErr('inp-name',   !nameOk   && name.length > 0);
-  setErr('inp-code',   !codeOk   && code.length > 0);
-  setErr('inp-amount', !amountOk && amount.length > 0);
+  // แสดง error เฉพาะช่องที่เริ่มพิมพ์แล้ว
+  setFieldState('inp-name',   nameOk,   name.length > 0);
+  setFieldState('inp-code',   codeOk,   code.length > 0);
+  setFieldState('inp-amount', amountOk, amount.length > 0);
 
   const allOk = nameOk && codeOk && amountOk && agreed;
-  const link = document.getElementById('confirmLink');
-  link.classList.toggle('active', allOk);
-  link.querySelector('button').style.cursor = allOk ? 'pointer' : 'not-allowed';
+  document.getElementById('confirmBtn').classList.toggle('active', allOk);
+  return allOk;
 }
 
-function setErr(id, hasErr) {
-  document.getElementById(id).classList.toggle('err', hasErr);
+function setFieldState(id, isOk, hasInput) {
+  const el = document.getElementById(id);
+  el.classList.toggle('err', !isOk && hasInput);
+  el.classList.toggle('ok',   isOk && hasInput);
 }
 
-// ---- Format: รหัสผู้ขาย → KPS-XXXXX ----
+// ================================================================
+// Format รหัสผู้ขาย: พิมพ์ตัวเลข → KPS-XXXXXX (6 หลัก)
+// ================================================================
 function fmtCode(el) {
-  let v = el.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
-  if (v.startsWith('KPS') && v.length > 3) v = 'KPS-' + v.slice(3,8);
-  else if (!v.startsWith('KPS') && v.length > 0) v = 'KPS-' + v.slice(0,5);
-  el.value = v;
+  const digits = el.value.replace(/[^0-9]/g, '').slice(0, 6);
+  el.value = digits.length > 0 ? 'KPS-' + digits : '';
 }
 
-// ---- Format: ยอดเงิน → 23,000 ----
+// ================================================================
+// Format ยอดเงิน: → 23,000
+// ================================================================
 function fmtAmount(el) {
-  let raw = el.value.replace(/[^0-9]/g,'');
-  if (raw) el.value = parseInt(raw).toLocaleString('th-TH');
-  else el.value = '';
+  const raw = el.value.replace(/[^0-9]/g, '');
+  el.value = raw ? parseInt(raw).toLocaleString('th-TH') : '';
 }
 
+// ================================================================
+// Submit: บันทึก Sheet → redirect LINE
+// ================================================================
+function submitData() {
+  if (!validate() || isSubmitting) return;
 
-// ---- Submit + redirect ไป LINE โดยตรง (ไม่มี popup) ----
-function submitData(e) {
-  e.preventDefault();
-  const link = document.getElementById('confirmLink');
-  if (!link.classList.contains('active')) return;
+  isSubmitting = true;
+  const btn = document.getElementById('confirmBtn');
+  btn.classList.remove('active');
+  btn.classList.add('loading');
+  btn.textContent = 'กำลังบันทึก...';
 
-  const name   = document.getElementById('inp-name').value.trim();
-  const code   = document.getElementById('inp-code').value.trim();
-  const amount = document.getElementById('inp-amount').value.trim();
-  const ts     = new Date().toLocaleString('th-TH', {timeZone:'Asia/Bangkok'});
+  const payload = {
+    name:      document.getElementById('inp-name').value.trim(),
+    code:      document.getElementById('inp-code').value.trim(),
+    amount:    document.getElementById('inp-amount').value.trim(),
+    timestamp: new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' }),
+    status:    'ยืนยันแล้ว'
+  };
 
-  if (SHEET_URL) {
-    showToast('กำลังบันทึกข้อมูล...', '');
-    fetch(SHEET_URL, {
-      method: 'POST', mode: 'no-cors',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ name, code, amount, timestamp: ts, status: 'ยืนยันแล้ว' })
-    }).catch(()=>{}).finally(()=>{ goLINE(); });
-  } else {
-    goLINE();
+  fetch(SHEET_URL, {
+    method:  'POST',
+    mode:    'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload)
+  })
+  .catch(() => {})
+  .finally(() => { window.location.href = LINE_URL; });
+}
+
+// ================================================================
+// Generate QR จาก SHEET_URL
+// ================================================================
+window.addEventListener('load', function () {
+  if (typeof QRCode !== 'undefined') {
+    new QRCode(document.getElementById('qr-canvas'), {
+      text:         SHEET_URL,
+      width:        88,
+      height:       88,
+      colorDark:    '#1a3a6b',
+      colorLight:   '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
   }
-}
-
-function goLINE() {
-  window.location.href = 'https://line.me/ti/p/Rpvv6sGPQY';
-}
-
-// ---- Toast notification ----
-function showToast(msg, type) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show ' + type;
-  setTimeout(() => t.className = 'toast', 3000);
-}
+});
 </script>
 </body>
 </html>
